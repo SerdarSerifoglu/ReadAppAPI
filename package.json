@@ -1,0 +1,19 @@
+{
+  "name": "readapp",
+  "version": "1.0.0",
+  "description": "Reader Application API",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "reader",
+    "read-app"
+  ],
+  "author": "Omer Serdar Serifoglu",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SerdarSerifoglu/ReadAppAPI/issues"
+  },
+  "homepage": "https://github.com/SerdarSerifoglu/ReadAppAPI#readme"
+}
