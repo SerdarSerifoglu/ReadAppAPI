@@ -4,7 +4,8 @@
   "description": "Reader Application API",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
   },
   "keywords": [
     "reader",
@@ -12,6 +13,20 @@
   ],
   "author": "Omer Serdar Serifoglu",
   "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-async-handler": "^1.1.4",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.9.25",
+    "multer": "^1.4.2",
+    "nodemailer": "^6.4.11",
+    "slugify": "^1.4.5"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  },
   "bugs": {
     "url": "https://github.com/SerdarSerifoglu/ReadAppAPI/issues"
   },
