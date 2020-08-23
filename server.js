@@ -5,9 +5,10 @@ const customErrorHandler = require("./middlewares/errors/customErrorHandler");
 const routers = require("./routers/index");
 //path express içindeki bir paket
 const path = require('path');
+var cors = require("cors");
 
 const app = express();
-
+app.use(cors());
 dotenv.config({
     path: "./config/env/config.env"
 });

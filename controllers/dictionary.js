@@ -10,10 +10,19 @@ const getAllWords = asyncErrorWrapper(async (req,res,next) => {
     });
 });
 
+const getAllWordsTrEng1 = asyncErrorWrapper(async (req,res,next) => {
+    const words = await Dictionary.find({userId:req.user.id}).select("valTr1 valEng1");
+    res.status(200).json({
+        success: true,
+        data: words
+    });
+});
+
 const addWord = asyncErrorWrapper(async (req,res,next) => {
     const incomingData = req.body;
     const addedWord = await Dictionary.create({
-        ...incomingData
+        ...incomingData,
+        userId: req.user.id
     });
 
     return res.status(200)
@@ -25,5 +34,6 @@ const addWord = asyncErrorWrapper(async (req,res,next) => {
 
 module.exports = {
     getAllWords,
-    addWord
+    addWord,
+    getAllWordsTrEng1
 }
