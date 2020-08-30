@@ -10,7 +10,7 @@ const getAllWords = asyncErrorWrapper(async (req,res,next) => {
     });
 });
 
-const getAllWordsTrEng1 = asyncErrorWrapper(async (req,res,next) => {
+const getAllWordsTrEng = asyncErrorWrapper(async (req,res,next) => {
     const words = await Dictionary.find({userId:req.user.id}).select("valTr1 valEng1");
     res.status(200).json({
         success: true,
@@ -35,5 +35,5 @@ const addWord = asyncErrorWrapper(async (req,res,next) => {
 module.exports = {
     getAllWords,
     addWord,
-    getAllWordsTrEng1
+    getAllWordsTrEng
 }

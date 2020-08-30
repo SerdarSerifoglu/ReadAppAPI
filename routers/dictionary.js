@@ -3,12 +3,12 @@ const router = express.Router();
 const {
     getAllWords,
     addWord,
-    getAllWordsTrEng1
+    getAllWordsTrEng
 } = require("../controllers/dictionary");
 const { getAccessToRoute } = require('../middlewares/authorization/auth');
 
 router.get("/", getAccessToRoute, getAllWords);
-router.get("/treng1", getAccessToRoute, getAllWordsTrEng1);
+router.get("/treng", getAccessToRoute, getAllWordsTrEng);
 router.post("/add", getAccessToRoute, addWord);
 
 module.exports = router;
