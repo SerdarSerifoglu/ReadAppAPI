@@ -1,8 +1,8 @@
-const express = require('express');
+const express = require("express");
 // const question = require("./question");
 const auth = require("./auth");
-const user = require('./user');
-const dictionary = require('./dictionary');
+const user = require("./user");
+const dictionary = require("./dictionary");
 // const admin = require('./admin');
 
 const router = express.Router();
