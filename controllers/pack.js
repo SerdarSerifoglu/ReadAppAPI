@@ -1,7 +1,6 @@
 const Pack = require("../models/Pack");
 const CustomError = require("../helpers/error/CustomError");
 const asyncErrorWrapper = require("express-async-handler");
-const Dictionary = require("../models/Dictionary");
 
 const getAllPacks = asyncErrorWrapper(async (req, res, next) => {
   //Daha sonra subscriberIds array'inin kontrolü sağlanıcak.
