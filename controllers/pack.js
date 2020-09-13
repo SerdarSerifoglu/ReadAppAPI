@@ -23,7 +23,21 @@ const addPack = asyncErrorWrapper(async (req, res, next) => {
     data: addedPack,
   });
 });
+
+const addWord = asyncErrorWrapper(async (req, res, next) => {
+  const packId = req.params.packId;
+  const incomingData = req.body;
+  const pack = await Pack.findById({ _id: packId });
+  pack.words.push(incomingData);
+  await pack.save();
+  res.status(200).json({
+    success: true,
+    message: "Word Added",
+  });
+});
+
 module.exports = {
   getAllPacks,
   addPack,
+  addWord,
 };

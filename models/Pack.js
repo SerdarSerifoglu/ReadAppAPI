@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Word = require("./Word");
 
 const Schema = mongoose.Schema;
 
@@ -20,6 +21,7 @@ const PackSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  words: [Word],
 });
 
 module.exports = mongoose.model("Pack", PackSchema);
