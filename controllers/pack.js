@@ -19,6 +19,20 @@ const getAllPacksForCombobox = asyncErrorWrapper(async (req, res, next) => {
   });
 });
 
+const getAllWordsByPack = asyncErrorWrapper(async (req, res, next) => {
+  const words = await Pack.find(
+    {
+      ownerId: req.user.id,
+      _id: req.params.packId,
+    },
+    "words"
+  );
+  res.status(200).json({
+    success: true,
+    data: words,
+  });
+});
+
 const addPack = asyncErrorWrapper(async (req, res, next) => {
   const incomingData = req.body;
   const addedPack = await Pack.create({
@@ -49,4 +63,5 @@ module.exports = {
   getAllPacksForCombobox,
   addPack,
   addWord,
+  getAllWordsByPack,
 };
