@@ -33,6 +33,22 @@ const getAllWordsByPack = asyncErrorWrapper(async (req, res, next) => {
   });
 });
 
+const getOneWordById = asyncErrorWrapper(async (req, res, next) => {
+  const words = await Pack.find(
+    {
+      ownerId: req.user.id,
+      _id: req.params.packId,
+    },
+    "words"
+  );
+  var word = words[0].words.filter((x) => x._id == req.params.wordId);
+
+  res.status(200).json({
+    success: true,
+    data: word,
+  });
+});
+
 const addPack = asyncErrorWrapper(async (req, res, next) => {
   const incomingData = req.body;
   const addedPack = await Pack.create({
@@ -58,10 +74,33 @@ const addWord = asyncErrorWrapper(async (req, res, next) => {
   });
 });
 
+const updateWord = asyncErrorWrapper(async (req, res, next) => {
+  const packId = req.params.packId;
+  const incomingData = req.body;
+  const pack = await Pack.findById({ _id: packId });
+  // var word = pack.words.filter((x) => x._id == incomingData._id);
+  for (let i = 0; i < pack.words.length; i++) {
+    if (pack.words[i].id == incomingData._id) {
+      pack.words[i] = {
+        ...pack.words[i],
+        ...incomingData,
+      };
+    }
+  }
+
+  await pack.save();
+  res.status(200).json({
+    success: true,
+    message: "Word Updated",
+  });
+});
+
 module.exports = {
   getAllPacks,
   getAllPacksForCombobox,
   addPack,
   addWord,
   getAllWordsByPack,
+  getOneWordById,
+  updateWord,
 };
