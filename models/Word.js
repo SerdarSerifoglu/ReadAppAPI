@@ -3,18 +3,18 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const Word = new Schema({
-  firstWordValue: {
+  mainWord: {
     type: String,
     required: true,
   },
-  secondWordValue: {
+  secondaryWord: {
     type: String,
     required: true,
   },
-  firstWordAF: {
+  mainWordAF: {
     type: String,
   },
-  secondWordAF: {
+  secondaryWordAF: {
     type: String,
   },
 });
