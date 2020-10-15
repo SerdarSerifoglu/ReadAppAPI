@@ -9,12 +9,14 @@ const {
   getAllWordsByPack,
   getOneWordById,
   updateWord,
+  getOneWordByMainWord,
 } = require("../controllers/pack");
 
 router.get("/", getAccessToRoute, getAllPacks);
 router.get("/forCbx", getAccessToRoute, getAllPacksForCombobox);
 router.get("/:packId/words", getAccessToRoute, getAllWordsByPack);
 router.get("/:packId/words/:wordId", getAccessToRoute, getOneWordById);
+router.get("/:packId/word/:word", getAccessToRoute, getOneWordByMainWord);
 
 router.post("/add", getAccessToRoute, addPack);
 router.post("/:packId/word", getAccessToRoute, addWord);

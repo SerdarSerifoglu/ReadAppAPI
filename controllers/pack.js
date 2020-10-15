@@ -49,6 +49,24 @@ const getOneWordById = asyncErrorWrapper(async (req, res, next) => {
   });
 });
 
+const getOneWordByMainWord = asyncErrorWrapper(async (req, res, next) => {
+  const words = await Pack.find(
+    {
+      ownerId: req.user.id,
+      _id: req.params.packId,
+    },
+    "words"
+  );
+  const word = words[0].words.filter(
+    (x) => x.mainWord.toLowerCase() === req.params.word.toLowerCase()
+  );
+
+  res.status(200).json({
+    success: true,
+    data: word,
+  });
+});
+
 const addPack = asyncErrorWrapper(async (req, res, next) => {
   const incomingData = req.body;
   const addedPack = await Pack.create({
@@ -103,4 +121,5 @@ module.exports = {
   getAllWordsByPack,
   getOneWordById,
   updateWord,
+  getOneWordByMainWord,
 };
