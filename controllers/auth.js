@@ -1,13 +1,11 @@
 const User = require("../models/User");
 const CustomError = require("../helpers/error/CustomError");
 const asyncErrorWrapper = require("express-async-handler");
-const { sendJwtToClient } = require("../helpers/authorization/tokenHelpers");
-const {
-  validateUserInput,
-  comparePassword,
-} = require("../helpers/input/inputHelpers");
+const { sendJwtToClient, isTokenIncluded, getAccessTokenFromHeader } = require("../helpers/authorization/tokenHelpers");
+const { validateUserInput, comparePassword } = require("../helpers/input/inputHelpers");
 const { compareSync } = require("bcryptjs");
 const sendEmail = require("../helpers/libraries/sendEmail");
+const jwt = require("jsonwebtoken");
 
 const register = asyncErrorWrapper(async (req, res, next) => {
   const { name, email, password, role } = req.body;
@@ -21,16 +19,35 @@ const register = asyncErrorWrapper(async (req, res, next) => {
 
 const errorTest = (req, res, next) => {
   //Some Code
-  return next(
-    new CustomError("Bu bir hata Denemesidir. Custom ERROR MESSAGE", 400)
-  );
+  return next(new CustomError("Bu bir hata Denemesidir. Custom ERROR MESSAGE", 400));
   //Some Code
 };
 
 const tokenTest = (req, res, next) => {
-  res.json({
-    success: true,
-    message: "Welcome",
+  const { JWT_SECRET_KEY } = process.env;
+  if (!isTokenIncluded(req)) {
+    res.json({
+      success: false,
+      message: "Doesn't Have Token",
+    });
+  }
+  const accessToken = getAccessTokenFromHeader(req);
+  jwt.verify(accessToken, JWT_SECRET_KEY, (err, decoded) => {
+    if (err) {
+      res.json({
+        success: false,
+        message: "Invalid",
+      });
+    }
+    req.user = {
+      id: decoded.id,
+      name: decoded.name,
+    };
+    console.log(decoded);
+    res.json({
+      success: true,
+      message: "Welcome",
+    });
   });
 };
 

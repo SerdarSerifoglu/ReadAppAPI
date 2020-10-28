@@ -19,14 +19,10 @@ const router = express.Router();
 router.post("/register", register);
 router.post("/login", login);
 router.get("/error", errorTest);
-router.get("/tokentest", getAccessToRoute, tokenTest);
+router.get("/tokentest", tokenTest);
 router.get("/profile", getAccessToRoute, getUser);
 router.get("/logout", getAccessToRoute, logout);
-router.post(
-  "/upload",
-  [getAccessToRoute, profileImageUpload.single("profile_image")],
-  imageUpload
-);
+router.post("/upload", [getAccessToRoute, profileImageUpload.single("profile_image")], imageUpload);
 router.post("/forgotpassword", forgotPassword);
 router.put("/resetpassword", resetPassword);
 router.put("/edit", getAccessToRoute, editDetails);
