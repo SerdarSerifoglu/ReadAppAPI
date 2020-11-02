@@ -19,6 +19,15 @@ const getArticleById = asyncErrorWrapper(async (req, res, next) => {
   });
 });
 
+const getArticleByTitle = asyncErrorWrapper(async (req, res, next) => {
+  const articleTitle = req.params.articleTitle;
+  const article = await Article.find({ title: articleTitle, ownerId: req.user.id });
+  res.status(200).json({
+    success: true,
+    data: article,
+  });
+});
+
 const addArticle = asyncErrorWrapper(async (req, res, next) => {
   const incomingData = req.body;
   const addedArticle = await Article.create({
@@ -48,9 +57,33 @@ const updateArticle = asyncErrorWrapper(async (req, res, next) => {
   });
 });
 
+const deleteArticle = asyncErrorWrapper(async (req, res, next) => {
+  const articleId = req.params.articleId;
+
+  const article = await Article.deleteOne({ _id: articleId, ownerId: req.user.id }, function (err) {
+    if (err) {
+      console.log(err);
+      return new CustomError(err, 400);
+    }
+  });
+  if (article.deletedCount > 0) {
+    res.status(200).json({
+      success: true,
+      message: "Article is deleted",
+    });
+  } else {
+    res.status(200).json({
+      success: false,
+      message: "Article is not found",
+    });
+  }
+});
+
 module.exports = {
   getAllArticle,
   getArticleById,
+  getArticleByTitle,
   addArticle,
   updateArticle,
+  deleteArticle,
 };
