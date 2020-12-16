@@ -57,9 +57,7 @@ const getOneWordByMainWord = asyncErrorWrapper(async (req, res, next) => {
     },
     "words"
   );
-  const word = words[0].words.filter(
-    (x) => x.mainWord.toLowerCase() === req.params.word.toLowerCase()
-  );
+  const word = words[0].words.filter((x) => x.mainWord.toLowerCase() === req.params.word.toLowerCase());
 
   res.status(200).json({
     success: true,
@@ -113,6 +111,24 @@ const updateWord = asyncErrorWrapper(async (req, res, next) => {
   });
 });
 
+const deleteWord = asyncErrorWrapper(async (req, res, next) => {
+  const packId = req.params.packId;
+  const wordId = req.params.wordId;
+
+  const pack = await Pack.findById({ _id: packId });
+
+  const index = pack.words.findIndex((x) => x._id == wordId);
+  if (index > -1) {
+    pack.words.splice(index, 1);
+  }
+
+  await pack.save();
+  res.status(200).json({
+    success: true,
+    message: "Word Deleted",
+  });
+});
+
 module.exports = {
   getAllPacks,
   getAllPacksForCombobox,
@@ -122,4 +138,5 @@ module.exports = {
   getOneWordById,
   updateWord,
   getOneWordByMainWord,
+  deleteWord,
 };
