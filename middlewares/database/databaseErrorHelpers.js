@@ -1,4 +1,5 @@
 const User = require("../../models/User");
+const Pack = require("../../models/Pack");
 const CustomError = require("../../helpers/error/CustomError");
 const asyncErrorWrapper = require("express-async-handler");
 
@@ -9,6 +10,21 @@ const checkUserExist = asyncErrorWrapper(async (req, res, next) => {
 
   if (!user) {
     return next(new CustomError("There is no such user with that id", 400));
+  }
+  next();
+});
+
+const checkWordExist = asyncErrorWrapper(async (req, res, next) => {
+  const packId = req.params.packId;
+  const incomingData = req.body;
+
+  const pack = await Pack.findById(packId);
+  if (pack != null && pack.words != null && pack.words.length > 0) {
+    var sameWord = pack.words.filter((x) => {
+      return x.mainWord === incomingData.mainWord;
+    });
+    console.log({ sameWord: sameWord, words: pack.words, incomingData: incomingData });
+    if (sameWord != null && sameWord.length > 0) return next(new CustomError("This word is included in the pack", 400));
   }
   next();
 });
@@ -41,6 +57,7 @@ const checkUserExist = asyncErrorWrapper(async (req, res, next) => {
 
 module.exports = {
   checkUserExist,
+  checkWordExist,
   // checkQuestionExist,
   // checkQuestionAndAnswerExist
 };
