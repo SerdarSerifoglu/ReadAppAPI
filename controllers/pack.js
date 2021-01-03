@@ -19,6 +19,14 @@ const getAllPacksForCombobox = asyncErrorWrapper(async (req, res, next) => {
   });
 });
 
+const getAllUsersPacks = asyncErrorWrapper(async (req, res, next) => {
+  const packs = await Pack.find({ ownerId: req.user.id }, "title description isShared");
+  res.status(200).json({
+    success: true,
+    data: packs,
+  });
+});
+
 const getAllWordsByPack = asyncErrorWrapper(async (req, res, next) => {
   const words = await Pack.find(
     {
@@ -78,6 +86,30 @@ const addPack = asyncErrorWrapper(async (req, res, next) => {
   });
 });
 
+const updatePack = asyncErrorWrapper(async (req, res, next) => {
+  const packId = req.params.packId;
+  const incomingData = req.body;
+  const pack = await Pack.findById({ _id: packId });
+  pack.title = incomingData.title;
+  pack.description = incomingData.description;
+  await pack.save();
+  res.status(200).json({
+    success: true,
+    message: "Pack Updated",
+  });
+});
+
+const deletePack = asyncErrorWrapper(async (req, res, next) => {
+  const packId = req.params.packId;
+  const pack = await Pack.findById({ _id: packId });
+  await pack.remove();
+
+  res.status(200).json({
+    success: true,
+    message: "Pack Deleted",
+  });
+});
+
 const addWord = asyncErrorWrapper(async (req, res, next) => {
   const packId = req.params.packId;
   const incomingData = req.body;
@@ -111,6 +143,18 @@ const updateWord = asyncErrorWrapper(async (req, res, next) => {
   });
 });
 
+const sharePack = asyncErrorWrapper(async (req, res, next) => {
+  const packId = req.params.packId;
+  const incomingData = req.body;
+  const pack = await Pack.findById({ _id: packId });
+  pack.isShared = !pack.isShared;
+  await pack.save();
+  res.status(200).json({
+    success: true,
+    message: pack.isShared ? "Pack Shared" : "Pack Sharing Canceled",
+  });
+});
+
 const deleteWord = asyncErrorWrapper(async (req, res, next) => {
   const packId = req.params.packId;
   const wordId = req.params.wordId;
@@ -139,4 +183,8 @@ module.exports = {
   updateWord,
   getOneWordByMainWord,
   deleteWord,
+  getAllUsersPacks,
+  sharePack,
+  updatePack,
+  deletePack,
 };
