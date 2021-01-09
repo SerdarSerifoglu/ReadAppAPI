@@ -173,6 +173,14 @@ const deleteWord = asyncErrorWrapper(async (req, res, next) => {
   });
 });
 
+const getAllSharedPacks = asyncErrorWrapper(async (req, res, next) => {
+  const packs = await Pack.find({ isShared: true }, "title description isShared");
+  res.status(200).json({
+    success: true,
+    data: packs,
+  });
+});
+
 module.exports = {
   getAllPacks,
   getAllPacksForCombobox,
@@ -187,4 +195,5 @@ module.exports = {
   sharePack,
   updatePack,
   deletePack,
+  getAllSharedPacks,
 };

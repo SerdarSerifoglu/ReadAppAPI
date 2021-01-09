@@ -16,6 +16,7 @@ const {
   sharePack,
   updatePack,
   deletePack,
+  getAllSharedPacks,
 } = require("../controllers/pack");
 
 router.get("/", getAccessToRoute, getAllPacks);
@@ -24,6 +25,7 @@ router.get("/:packId/words", getAccessToRoute, getAllWordsByPack);
 router.get("/:packId/words/:wordId", getAccessToRoute, getOneWordById);
 router.get("/:packId/word/:word", getAccessToRoute, getOneWordByMainWord);
 router.get("/getAllUsersPacks", getAccessToRoute, getAllUsersPacks);
+router.get("/getAllSharedPacks", getAccessToRoute, getAllSharedPacks);
 
 router.post("/add", getAccessToRoute, addPack);
 router.post("/:packId/word", [getAccessToRoute, checkWordExist], addWord);
