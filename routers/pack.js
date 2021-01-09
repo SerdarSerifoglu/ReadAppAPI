@@ -17,6 +17,7 @@ const {
   updatePack,
   deletePack,
   getAllSharedPacks,
+  packCopy,
 } = require("../controllers/pack");
 
 router.get("/", getAccessToRoute, getAllPacks);
@@ -28,6 +29,7 @@ router.get("/getAllUsersPacks", getAccessToRoute, getAllUsersPacks);
 router.get("/getAllSharedPacks", getAccessToRoute, getAllSharedPacks);
 
 router.post("/add", getAccessToRoute, addPack);
+router.post("/packCopy", getAccessToRoute, packCopy);
 router.post("/:packId/word", [getAccessToRoute, checkWordExist], addWord);
 
 router.put("/:packId/word", getAccessToRoute, updateWord);

@@ -1,6 +1,7 @@
 const Pack = require("../models/Pack");
 const CustomError = require("../helpers/error/CustomError");
 const asyncErrorWrapper = require("express-async-handler");
+const mongoose = require("mongoose");
 
 const getAllPacks = asyncErrorWrapper(async (req, res, next) => {
   //Daha sonra subscriberIds array'inin kontrolü sağlanıcak.
@@ -174,11 +175,35 @@ const deleteWord = asyncErrorWrapper(async (req, res, next) => {
 });
 
 const getAllSharedPacks = asyncErrorWrapper(async (req, res, next) => {
-  const packs = await Pack.find({ isShared: true }, "title description isShared");
+  const packs = await Pack.find({ isShared: true }, "title description isShared copyCount");
   res.status(200).json({
     success: true,
     data: packs,
   });
+});
+
+const packCopy = asyncErrorWrapper(async (req, res, next) => {
+  const incomingData = req.body;
+  if (incomingData != null && incomingData.packId != undefined && incomingData.packId != null) {
+    console.log(incomingData.packId);
+    const pack = await Pack.findById({ _id: incomingData.packId });
+    var clonePack = pack;
+    clonePack._id = mongoose.Types.ObjectId();
+    clonePack.ownerId = req.user.id;
+    clonePack.isShared = false;
+    clonePack.copyCount = 0;
+    clonePack.isNew = true;
+    await clonePack.save();
+
+    const mainPack = await Pack.findById({ _id: incomingData.packId });
+    mainPack.copyCount += 1;
+    await mainPack.save();
+
+    res.status(200).json({
+      success: true,
+      data: { clonePack, mainPack },
+    });
+  }
 });
 
 module.exports = {
@@ -196,4 +221,5 @@ module.exports = {
   updatePack,
   deletePack,
   getAllSharedPacks,
+  packCopy,
 };
