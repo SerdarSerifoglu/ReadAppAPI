@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const UserSettingsSchema = new Schema({
-  selectedPack: {
+  selectedPackId: {
     type: String,
   },
   wordColor: {
