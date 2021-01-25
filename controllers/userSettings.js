@@ -3,8 +3,7 @@ const CustomError = require("../helpers/error/CustomError");
 const asyncErrorWrapper = require("express-async-handler");
 
 const getUserSetting = asyncErrorWrapper(async (req, res, next) => {
-  const userSettingId = req.params.userSettingId;
-  const userSetting = await UserSetting.find({ _id: userSettingId });
+  const userSetting = await UserSetting.findOne({ userId: req.user.id });
   res.status(200).json({
     success: true,
     data: userSetting,

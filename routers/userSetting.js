@@ -3,7 +3,7 @@ const router = express.Router();
 const { getAccessToRoute } = require("../middlewares/authorization/auth");
 const { getUserSetting, addUserSetting, updateUserSetting } = require("../controllers/userSettings");
 
-router.get("/:userSettingId", getAccessToRoute, getUserSetting);
+router.get("/getUserSettings", getAccessToRoute, getUserSetting);
 
 router.post("/add", getAccessToRoute, addUserSetting);
 
