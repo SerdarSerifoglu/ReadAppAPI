@@ -131,8 +131,9 @@ const forgotPassword = asyncErrorWrapper(async (req, res, next) => {
   const resetPasswordToken = user.getResetPasswordTokenFromUser();
 
   await user.save();
-
-  const resetPasswordUrl = `http://localhost:5000/api/auth/resetpassword?resetPasswordToken=${resetPasswordToken}`;
+  //process.env.API_URL getiremedim sürekli undefined verdi daha sonra incelenicek
+  const apiURL = "http://192.168.1.14:8081/";
+  const resetPasswordUrl = `${apiURL}resetpassword?resetPasswordToken=${resetPasswordToken}`;
 
   const emailTemplate = `
     <h3>Reset Your Password</h3>
@@ -153,11 +154,11 @@ const forgotPassword = asyncErrorWrapper(async (req, res, next) => {
   } catch (err) {
     user.resetPasswordToken = undefined;
     user.resetPasswordExpire = undefined;
+
+    await user.save();
+
+    return next(new CustomError("Email Could Not Be Sent", 500));
   }
-
-  await user.save();
-
-  return next(new CustomError("Email Could Not Be Sent", 500));
 });
 
 const resetPassword = asyncErrorWrapper(async (req, res, next) => {
