@@ -30,7 +30,7 @@ router.get("/getAllSharedPacks", getAccessToRoute, getAllSharedPacks);
 
 router.post("/add", getAccessToRoute, addPack);
 router.post("/packCopy", getAccessToRoute, packCopy);
-router.post("/:packId/word", [getAccessToRoute, checkWordExist], addWord);
+router.post("/:packId/word", getAccessToRoute, addWord);
 
 router.put("/:packId/word", getAccessToRoute, updateWord);
 router.put("/:packId/shared", getAccessToRoute, sharePack);

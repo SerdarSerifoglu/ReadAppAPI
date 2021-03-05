@@ -29,6 +29,12 @@ app.use(customErrorHandler);
 
 //Static Files
 app.use(express.static(path.join(__dirname, "public"))); // yaptığı iş dirname ile public ismini bağlamak
+app.use("/", express.static(path.join(__dirname, "/dist")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "./dist/index.html"));
+});
+
 console.log(path.join(__dirname, "public")); //örnek
 
 app.listen(PORT, function () {

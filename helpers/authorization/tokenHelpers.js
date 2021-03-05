@@ -20,12 +20,13 @@ const sendJwtToClient = (user, res) => {
 };
 
 const isTokenIncluded = (req) => {
-  return (
-    req.headers.authorization && req.headers.authorization.startsWith("Bearer:")
-  );
+  console.log({ auth: req.headers.authorization });
+
+  return req.headers.authorization && req.headers.authorization.startsWith("Bearer:");
 };
 
 const getAccessTokenFromHeader = (req) => {
+  console.log({ auth: req.headers.authorization });
   const authorization = req.headers.authorization;
 
   const access_token = authorization.split(" ")[1];
