@@ -131,9 +131,9 @@ const forgotPassword = asyncErrorWrapper(async (req, res, next) => {
   const resetPasswordToken = user.getResetPasswordTokenFromUser();
 
   await user.save();
-  //process.env.API_URL getiremedim sürekli undefined verdi daha sonra incelenicek
-  const apiURL = "http://192.168.1.14:8081/";
-  const resetPasswordUrl = `${apiURL}resetpassword?resetPasswordToken=${resetPasswordToken}`;
+
+  const appURL = process.env.APP_URL;
+  const resetPasswordUrl = `${appURL}resetpassword?resetPasswordToken=${resetPasswordToken}`;
 
   const emailTemplate = `
     <h3>Reset Your Password</h3>
