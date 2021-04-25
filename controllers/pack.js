@@ -114,6 +114,12 @@ const deletePack = asyncErrorWrapper(async (req, res, next) => {
 const addWord = asyncErrorWrapper(async (req, res, next) => {
   const packId = req.params.packId;
   const incomingData = req.body;
+  if (typeof incomingData.mainWord === "string") {
+    incomingData.mainWord = incomingData.mainWord.trim();
+  }
+  if (typeof incomingData.secondaryWord === "string") {
+    incomingData.secondaryWord = incomingData.secondaryWord.trim();
+  }
   const pack = await Pack.findById({ _id: packId });
   pack.words.push(incomingData);
   await pack.save();
