@@ -7,10 +7,12 @@ const Word = new Schema(
     mainWord: {
       type: String,
       required: true,
+      trim: true,
     },
     secondaryWord: {
       type: String,
       required: true,
+      trim: true,
     },
     mainWordAF: {
       type: String,

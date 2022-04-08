@@ -21,7 +21,10 @@ const getAllPacksForCombobox = asyncErrorWrapper(async (req, res, next) => {
 });
 
 const getAllUsersPacks = asyncErrorWrapper(async (req, res, next) => {
-  const packs = await Pack.find({ ownerId: req.user.id }, "title description isShared");
+  const packs = await Pack.find(
+    { ownerId: req.user.id },
+    "title description isShared"
+  );
   res.status(200).json({
     success: true,
     data: packs,
@@ -66,7 +69,9 @@ const getOneWordByMainWord = asyncErrorWrapper(async (req, res, next) => {
     },
     "words"
   );
-  const word = words[0].words.filter((x) => x.mainWord.toLowerCase() === req.params.word.toLowerCase());
+  const word = words[0].words.filter(
+    (x) => x.mainWord.toLowerCase() === req.params.word.toLowerCase()
+  );
 
   res.status(200).json({
     success: true,
@@ -114,12 +119,7 @@ const deletePack = asyncErrorWrapper(async (req, res, next) => {
 const addWord = asyncErrorWrapper(async (req, res, next) => {
   const packId = req.params.packId;
   const incomingData = req.body;
-  if (typeof incomingData.mainWord === "string") {
-    incomingData.mainWord = incomingData.mainWord.trim();
-  }
-  if (typeof incomingData.secondaryWord === "string") {
-    incomingData.secondaryWord = incomingData.secondaryWord.trim();
-  }
+
   const pack = await Pack.findById({ _id: packId });
   pack.words.push(incomingData);
   await pack.save();
@@ -181,7 +181,10 @@ const deleteWord = asyncErrorWrapper(async (req, res, next) => {
 });
 
 const getAllSharedPacks = asyncErrorWrapper(async (req, res, next) => {
-  const packs = await Pack.find({ isShared: true }, "title description isShared copyCount");
+  const packs = await Pack.find(
+    { isShared: true },
+    "title description isShared copyCount"
+  );
   res.status(200).json({
     success: true,
     data: packs,
@@ -190,7 +193,11 @@ const getAllSharedPacks = asyncErrorWrapper(async (req, res, next) => {
 
 const packCopy = asyncErrorWrapper(async (req, res, next) => {
   const incomingData = req.body;
-  if (incomingData != null && incomingData.packId != undefined && incomingData.packId != null) {
+  if (
+    incomingData != null &&
+    incomingData.packId != undefined &&
+    incomingData.packId != null
+  ) {
     console.log(incomingData.packId);
     const pack = await Pack.findById({ _id: incomingData.packId });
     var clonePack = pack;
